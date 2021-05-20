@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import AddItem from "./Components/AddItem";
+import ListItems from "./Components/ListItems";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    items: [],
+  };
+
+  addItem = (x) => {
+    this.setState({
+      items: [...this.state.items, x],
+    });
+  };
+
+  // deleteItem = (i) => {
+  //   this.setState({
+  //     items: this.state.items.filter((el, index) => index !== i),
+  //   });
+  // };
+
+  deleteItem = (id) => {
+    this.setState({
+      items: this.state.items.filter((el) => el.id !== id),
+    });
+  };
+
+  done = (id) => {
+    this.setState({
+      items: this.state.items.map((el) =>
+        el.id === id ? { ...el, isDone: !el.isDone } : el
+      ),
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <AddItem add={this.addItem} />
+        <ListItems
+          items={this.state.items}
+          deleteItem={this.deleteItem}
+          done={this.done}
+        />
+      </div>
+    );
+  }
 }
-
-export default App;
